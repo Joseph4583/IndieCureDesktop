@@ -9,4 +9,6 @@ module org.example.indiecure {
 
     opens org.example.indiecure to javafx.fxml;
     exports org.example.indiecure;
+    exports Classes;
+    opens Classes to javafx.fxml;
 }

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.indiecure.IllnessTestingScreen">
    <top>
       <HBox maxHeight="100.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #066771;" BorderPane.alignment="CENTER">
          <children>
@@ -23,7 +23,7 @@
             </HBox>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="1320.0" HBox.hgrow="SOMETIMES">
                <children>
-                  <JFXButton text="Inicio" textFill="WHITE">
+                  <JFXButton fx:id="btnIllnessTesting_Home" onAction="#switchScreenToHome" text="Inicio" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="HOME" selectionStart="0" size="50" />
                      </graphic>
@@ -34,7 +34,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </JFXButton>
-                  <JFXButton text="Pacientes" textFill="WHITE">
+                  <JFXButton fx:id="btnIllnessTesting_Pacients" onAction="#switchScreenToPacient" text="Pacientes" textFill="WHITE">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
@@ -45,7 +45,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton prefHeight="64.0" prefWidth="173.0" text="Diagnosticar Enfermedades" textFill="WHITE" wrapText="true">
+                  <JFXButton fx:id="btnIllnessTesting_IllenessDiagnosis" onAction="#switchScreenToIllnessDiagnosis" prefHeight="64.0" prefWidth="173.0" text="Diagnosticar Enfermedades" textFill="WHITE" wrapText="true">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
@@ -56,7 +56,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton prefHeight="64.0" prefWidth="145.0" text="Pruebas Madicas" textFill="WHITE" wrapText="true">
+                  <JFXButton fx:id="btnIllnessTesting_IllnessTesting" onAction="#switchScreenToIllnesstesting" prefHeight="64.0" prefWidth="145.0" text="Pruebas Madicas" textFill="WHITE" wrapText="true">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -158,6 +158,46 @@
    <center>
       <VBox minHeight="400.0" minWidth="550.0" BorderPane.alignment="CENTER">
          <children>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+               <children>
+                  <FontAwesomeIconView glyphName="CHECK" size="35">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </FontAwesomeIconView>
+                  <Label text="Prueba positiva">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <FontAwesomeIconView glyphName="MINUS_SQUARE" size="30">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </FontAwesomeIconView>
+                  <Label text="Prueba no conclusiva">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <FontAwesomeIconView glyphName="TIMES" size="40">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </FontAwesomeIconView>
+                  <Label text="Prueba negativa">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
             <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
