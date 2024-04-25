@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.indiecure_aplication.Controller.HomeScreen">
+   <top>
+      <HBox maxHeight="100.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #066771;" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="300.0">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="75" />
+               </children></HBox>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="600.0" prefHeight="100.0" prefWidth="1320.0" HBox.hgrow="SOMETIMES">
+               <children>
+                  <JFXButton onAction="#switchScreenToHome" text="Inicio" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="HOME" selectionStart="0" size="50" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <MenuButton mnemonicParsing="false" style="-fx-background-color: transparent;" text="Ir A" textFill="WHITE">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#switchScreenToPacient" text="pacientes" />
+                      <MenuItem mnemonicParsing="false" onAction="#switchScreenToSymptoms" text="sintomas" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToIllness" text="enfermedades" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToDiagnostic" text="diagnostics" />
+                    </items>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="WHEELCHAIR" size="45" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </MenuButton>
+                  <MenuButton mnemonicParsing="false" style="-fx-background-color: transparent;" text="Evaluar" textFill="WHITE">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#switchScreenToIllnessDiagnosis" text="Diagnosticas Enfermedad" />
+                      <MenuItem mnemonicParsing="false" onAction="#switchScreenToIllnesstesting" text="Pruebas Medicas" />
+                    </items>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="50" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </MenuButton>
+               </children></HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="300.0">
+               <children>
+                  <JFXButton contentDisplay="RIGHT" text="User Name" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="USER_CIRCLE" size="50" />
+                     </graphic>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children></HBox>
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <VBox prefWidth="350.0" style="-fx-background-color: #268C8A;" BorderPane.alignment="TOP_CENTER">
+         <children>
+            <VBox alignment="TOP_CENTER">
+               <children>
+                  <Label text="Notificaciones Medicas" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" maxHeight="300.0">
+               <children>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: #268C8A;" vbarPolicy="ALWAYS" VBox.vgrow="SOMETIMES">
+                    <content>
+                        <VBox fx:id="homeScrollPane" alignment="TOP_CENTER" style="-fx-background-color: #268C8A;">
+                           <children>
+                              <ListView prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #268C8A;" />
+                           </children>
+                        </VBox>
+                    </content>
+                  </ScrollPane>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <HBox minHeight="500.0" minWidth="550.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

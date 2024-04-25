@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.indiecure_aplication.Controller.DiagnosticScreen">
+   <top>
+      <HBox maxHeight="100.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #066771;" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="300.0">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="VCARD" size="75" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="600.0" prefHeight="100.0" prefWidth="1320.0">
+               <children>
+                  <JFXButton onAction="#switchScreenToHome" text="Inicio" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="HOME" selectionStart="0" size="50" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <MenuButton mnemonicParsing="false" style="-fx-background-color: transparent;" text="Ir A" textFill="WHITE">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToPacient" text="pacientes" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToSymptoms" text="sintomas" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToIllness" text="enfermedades" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToDiagnostic" text="diagnostics" />
+                     </items>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="WHEELCHAIR" size="45" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </MenuButton>
+                  <MenuButton mnemonicParsing="false" style="-fx-background-color: transparent;" text="Evaluar" textFill="WHITE">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToIllnessDiagnosis" text="Diagnosticas Enfermedad" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToIllnesstesting" text="Pruebas Medicas" />
+                     </items>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="50" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </MenuButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="300.0">
+               <children>
+                  <JFXButton contentDisplay="RIGHT" text="User Name" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="USER_CIRCLE" size="50" />
+                     </graphic>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox prefHeight="100.0" style="-fx-background-color: #066771;" BorderPane.alignment="TOP_RIGHT">
+         <children>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#addDiagnostic" style="-fx-background-color: #ffff; -fx-background-radius: 5px;" text="Añadir Diagnostico" textFill="#066771" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#modDiagnostic" style="-fx-background-color: #ffffff; -fx-background-radius: 5px;" text="Modificar Diagnostico" textFill="#066771" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#removeDiagnostic" style="-fx-background-color: #ffffff; -fx-background-radius: 5px;" text="Borrar Diagnostico" textFill="#066771">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+               <children>
+                  <TextField prefWidth="250.0">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button mnemonicParsing="false" text="Search">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Label text="Filtrar Por:">
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </Label>
+                  <RadioButton mnemonicParsing="false" text="Paciente">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" text="Enfermedad">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" text="Sintoma">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </RadioButton>
+               </children>
+            </HBox>
+            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn prefWidth="75.0" text="id_paciente" />
+                <TableColumn prefWidth="125.0" text="nombre_paciente" />
+                  <TableColumn prefWidth="125.0" text="id_enfermedad" />
+                  <TableColumn prefWidth="175.0" text="nombre_enfermedad" />
+                  <TableColumn prefWidth="300.0" text="sintomas" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

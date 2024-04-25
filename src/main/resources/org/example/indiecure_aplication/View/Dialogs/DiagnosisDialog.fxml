@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <expandableContent>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
+   </expandableContent>
+   <buttonTypes>
+      <ButtonType fx:constant="CANCEL" />
+      <ButtonType fx:constant="OK" />
+   </buttonTypes>
+   <content>
+      <GridPane fx:id="diagnosisDialogPane" alignment="CENTER" gridLinesVisible="true" style="-fx-background-color: #066771;">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="270.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="307.0" minWidth="0.0" prefWidth="200.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="320.0" minWidth="10.0" prefWidth="50.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="307.0" minWidth="10.0" prefWidth="50.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="75.0" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="118.0" minHeight="10.0" prefHeight="75.0" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="75.0" vgrow="ALWAYS" />
+         </rowConstraints>
+         <children>
+            <Label text="Paciente" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Enfermedad" textFill="WHITE" GridPane.rowIndex="1">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Sintoma1" textFill="WHITE" GridPane.rowIndex="2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textField_diagnosisDialog_pacient" prefWidth="200.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1" />
+            <TextField fx:id="textField_diagnosisDialog_symptom_1" prefWidth="200.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 50%; -fx-background-color: #268C8A;" text="+" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 50%; -fx-background-color: #268C8A;" text="-" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <TextField fx:id="textField_diagnosisDialog_illness" prefWidth="200.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </content>
+</DialogPane>
