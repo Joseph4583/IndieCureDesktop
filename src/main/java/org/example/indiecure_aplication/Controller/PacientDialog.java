@@ -5,9 +5,7 @@ import javafx.scene.control.TextField;
 
 public class PacientDialog {
     @FXML
-    private TextField textField_pacientDialog_name;
-    @FXML
-    private TextField textField_pacientDialog_age;
+    private TextField textField_pacientDialog_name, textField_pacientDialog_age;
 
     public String getPacienteDialog_name() {
         return textField_pacientDialog_name.getText().toString();

@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -71,17 +72,15 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="300.0">
                <children>
-                  <JFXButton contentDisplay="RIGHT" text="User Name" textFill="WHITE">
+                  <MenuButton mnemonicParsing="false" style="-fx-background-color: transparent;" textFill="WHITE">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#goToProfile" text="Ir a perfil" />
+                        <MenuItem mnemonicParsing="false" onAction="#closeSession" text="Cerrar sesion" />
+                     </items>
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="USER_CIRCLE" size="50" />
                      </graphic>
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </JFXButton>
+                  </MenuButton>
                </children>
             </HBox>
          </children>
@@ -117,12 +116,12 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                <children>
-                  <TextField prefWidth="250.0">
+                  <TextField fx:id="textFieldSearch" prefWidth="250.0">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" text="Search">
+                  <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#searchEntry" text="Search">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
@@ -132,30 +131,34 @@
                         <Insets left="40.0" />
                      </HBox.margin>
                   </Label>
-                  <RadioButton mnemonicParsing="false" text="Paciente">
+                  <RadioButton fx:id="radioBtnPacient" mnemonicParsing="false" text="Paciente">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="filter" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="radioBtnIllness" mnemonicParsing="false" text="Enfermedad" toggleGroup="$filter">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Enfermedad">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Sintoma">
+                  <RadioButton fx:id="radioBtnSynptom" mnemonicParsing="false" text="Sintoma" toggleGroup="$filter">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </RadioButton>
                </children>
             </HBox>
-            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="75.0" text="id_paciente" />
-                <TableColumn prefWidth="125.0" text="nombre_paciente" />
-                  <TableColumn prefWidth="125.0" text="id_enfermedad" />
-                  <TableColumn prefWidth="175.0" text="nombre_enfermedad" />
-                  <TableColumn prefWidth="300.0" text="sintomas" />
+                  <TableColumn fx:id="id_diagnostico" prefWidth="90.0" text="idDiagnostico" />
+                <TableColumn fx:id="id_paciente" prefWidth="77.0" text="idPaciente" />
+                <TableColumn fx:id="nombre_paciente" prefWidth="147.0" text="nombrePaciente" />
+                  <TableColumn fx:id="id_enfermedad" prefWidth="93.0" text="idEnfermedad" />
+                  <TableColumn fx:id="nombre_enfermedad" prefWidth="168.0" text="nombreEnfermedad" />
+                  <TableColumn fx:id="sintomas" prefWidth="224.0" text="sintomas" />
               </columns>
             </TableView>
          </children>

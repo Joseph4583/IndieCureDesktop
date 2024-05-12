@@ -43,11 +43,13 @@ public class Pacient extends IndieCureClass {
     @Override
     public void addToDB(){
         try {
+            assingId();
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb","root","");
-            String statementInsert = "INSERT INTO pacient (name, age) VALUES (?, ?)";
+            String statementInsert = "INSERT INTO pacient (id, name, age) VALUES (?, ?, ?)";
             PreparedStatement insert = connection.prepareStatement(statementInsert);
-            insert.setString(1, name);
-            insert.setInt(2, age);
+            insert.setInt(1, id);
+            insert.setString(2, name);
+            insert.setInt(3, age);
             insert.executeUpdate();
             insert.close();
             connection.close();
@@ -114,5 +116,35 @@ public class Pacient extends IndieCureClass {
             e.printStackTrace();
         }
         return exist;
+    }
+
+    public void assingId(){
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb","root","");
+
+            int illCount = 1;
+            int illId = 0;
+            Statement sentence = connection.createStatement();
+            String query = "SELECT * FROM pacient";
+            ResultSet result = sentence.executeQuery(query);
+            while (result.next()) {
+                int actualId = result.getInt("id");
+                if (illId == 0 && actualId == illCount) {
+                    illCount++;
+                } else {
+                    illId = illCount;
+                }
+            }
+            if (illId != 0) {
+                id = illId;
+            } else {
+                id = illCount;
+            }
+            result.close();
+            sentence.close();
+            connection.close();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
     }
 }

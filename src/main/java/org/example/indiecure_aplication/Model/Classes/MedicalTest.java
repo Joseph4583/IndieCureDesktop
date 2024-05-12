@@ -10,6 +10,10 @@ public class MedicalTest {
     public MedicalTest() {
 
     }
+    public MedicalTest(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
     public MedicalTest(int id, String name, TestResult testResult) {
         this.id = id;
         this.name = name;

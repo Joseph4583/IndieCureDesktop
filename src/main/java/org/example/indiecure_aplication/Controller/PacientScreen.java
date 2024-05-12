@@ -5,19 +5,19 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.ListView;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.example.indiecure_aplication.Main;
 import org.example.indiecure_aplication.Model.Classes.AlertDialog;
+import org.example.indiecure_aplication.Model.Classes.Doctor;
 import org.example.indiecure_aplication.Model.Classes.Pacient;
 import org.example.indiecure_aplication.Model.Classes.ScreenSwitcher;
 import org.example.indiecure_aplication.Model.Exceptions.AlreadyExistingObject;
 import org.example.indiecure_aplication.Model.Exceptions.CancelDialogException;
 import org.example.indiecure_aplication.Model.Exceptions.NonExistingObject;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,42 +25,66 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class PacientScreen {
+public class PacientScreen implements Initializable {
     Pacient pacient = new Pacient();
+    Doctor doctor;
     ArrayList<Pacient> pacientArrayList = new ArrayList<>();
     Stage stage;
     ScreenSwitcher switcher = new ScreenSwitcher();
     AlertDialog alertDialog = new AlertDialog();
     @FXML
     private ListView<String> pacientListView;
+    @FXML
+    private Label labelName, labelAge;
     ObservableList<String> items = FXCollections.observableArrayList();
 
     public void switchScreenToHome(ActionEvent actionEvent) {
-        switcher.screenSwitch("HomeScreen.fxml", stage);
+        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
     }
 
     public void switchScreenToPacient(ActionEvent actionEvent) {
-        switcher.screenSwitch("PacientScreen.fxml", stage);
     }
 
     public void switchScreenToIllnessDiagnosis(ActionEvent actionEvent) {
-        switcher.screenSwitch("IllnessDiagnosisScreen.fxml", stage);
+        if (!doctor.getSpecializations().equals("Especial")) {
+            switcher.screenSwitch("IllnessDiagnosisScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("Los medicos especialistas no pueden entrar aqui");
+        }
     }
 
     public void switchScreenToIllnesstesting(ActionEvent actionEvent) {
-        switcher.screenSwitch("IllnessTestingScreen.fxml", stage);
+        if (!doctor.getSpecializations().equals("Cabezera")) {
+            switcher.screenSwitch("IllnessTestingScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("los medicos de cabezera no pueden entrar aqui");
+        }
     }
     public void switchScreenToSymptom(ActionEvent actionEvent) {
-        switcher.screenSwitch("SymptomScreen.fxml", stage);
+        if (doctor.getSpecializations().equals("Admin")) {
+            switcher.screenSwitch("SymptomScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("no tienes permisos de administrador");
+        }
     }
 
     public void switchScreenToIllness(ActionEvent actionEvent) {
-        switcher.screenSwitch("IllnessScreen.fxml", stage);
+        if (doctor.getSpecializations().equals("Admin")) {
+            switcher.screenSwitch("IllnessScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("no tienes permisos de administrador");
+        }
+
     }
 
     public void switchScreenToDiagnostic(ActionEvent actionEvent) {
-        switcher.screenSwitch("DiagnosticScreen.fxml", stage);
+        if (!doctor.getSpecializations().equals("Especial")) {
+            switcher.screenSwitch("DiagnosticScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("Los medicos especialistas no pueden entrar aqui");
+        }
     }
     public Stage getStage() {
         return stage;
@@ -70,6 +94,45 @@ public class PacientScreen {
         this.stage = stage;
     }
 
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public void goToProfile(ActionEvent actionEvent) {
+        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
+    }
+
+    public void closeSession(ActionEvent actionEvent) {
+        switcher.LogOff(stage);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        refreshPacientList();
+        if (pacientArrayList.size() > 0) {
+            for (Pacient pacientHelper : pacientArrayList) {
+                items.add(pacientHelper.getId() + " --- " + pacientHelper.getName());
+            }
+            pacientListView.setItems(items);
+        }
+
+        pacientListView.setOnMouseClicked(event -> {
+            String selectedItem = pacientListView.getSelectionModel().getSelectedItem();
+            if (!Objects.isNull(selectedItem)) {
+                for (Pacient pacientHelper: pacientArrayList){
+                    if (pacientHelper.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
+                        labelName.setText("Nombre: " + pacientHelper.getName());
+                        labelAge.setText("Edad: " + pacientHelper.getAge());
+                    }
+                }
+            }
+
+        });
+    }
 
     public void showDialogo(String mode) {
         try {
@@ -117,7 +180,11 @@ public class PacientScreen {
                 if (!pacient.checkIfExistInDB()) {
                     pacient.addToDB();
                     refreshPacientList();
-                    items.add(pacientArrayList.get(pacientArrayList.size() - 1).getId() + " --- " + pacientArrayList.get(pacientArrayList.size() - 1).getName());
+                    items.clear();
+                    for (Pacient pacientHelper : pacientArrayList) {
+                        items.add(pacientHelper.getId() + " --- " + pacientHelper.getName());
+                    }
+                    pacientListView.setItems(items);
                 } else {
                     throw new AlreadyExistingObject("El paciente ya existe");
                 }
@@ -135,7 +202,7 @@ public class PacientScreen {
         if (!pacientListView.getSelectionModel().isEmpty()) {
             String pacientStr = pacientListView.getSelectionModel().getSelectedItem();
             for (Pacient pacienteHelper : pacientArrayList){
-                if (pacienteHelper.getId() == Integer.parseInt(String.valueOf(pacientStr.charAt(0)))) {
+                if (pacienteHelper.getId() == Integer.parseInt(pacientStr.split(" ")[0])) {
                     pacient = pacienteHelper;
                 }
             }
@@ -151,8 +218,6 @@ public class PacientScreen {
             } catch (NonExistingObject neo) {
                 alertDialog.AlertError(neo.toString());
             }
-
-
         } else {
             alertDialog.AlertWarning("No hay ningun paciente seleccionado");
         }
@@ -161,7 +226,7 @@ public class PacientScreen {
         if (!pacientListView.getSelectionModel().isEmpty()) {
             String pacientStr = pacientListView.getSelectionModel().getSelectedItem();
             for (Pacient pacienteHelper : pacientArrayList){
-                if (pacienteHelper.getId() == Integer.parseInt(String.valueOf(pacientStr.charAt(0)))) {
+                if (pacienteHelper.getId() == Integer.parseInt(pacientStr.split(" ")[0])) {
                     pacient = pacienteHelper;
 
                 }
@@ -205,14 +270,5 @@ public class PacientScreen {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    };
-     public void startPacientList() {
-         refreshPacientList();
-         if (pacientArrayList.size() > 0) {
-             for (Pacient pacientHelper : pacientArrayList) {
-                 items.add(pacientHelper.getId() + " --- " + pacientHelper.getName());
-             }
-             pacientListView.setItems(items);
-         }
-     }
+    }
 }

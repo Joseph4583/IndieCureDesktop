@@ -69,17 +69,15 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="300.0">
                <children>
-                  <JFXButton contentDisplay="RIGHT" text="User Name" textFill="WHITE">
+                  <MenuButton mnemonicParsing="false" style="-fx-background-color: transparent;" textFill="WHITE">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#goToProfile" text="Ir a perfil" />
+                        <MenuItem mnemonicParsing="false" onAction="#closeSession" text="Cerrar sesion" />
+                     </items>
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="USER_CIRCLE" size="50" />
                      </graphic>
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </JFXButton>
+                  </MenuButton>
                </children>
             </HBox>
          </children>
@@ -102,7 +100,7 @@
             </VBox>
             <VBox alignment="CENTER" maxHeight="300.0">
                <children>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: #268C8A;" vbarPolicy="ALWAYS" VBox.vgrow="SOMETIMES">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: #268C8A;" VBox.vgrow="SOMETIMES">
                      <content>
                         <VBox alignment="TOP_CENTER" style="-fx-background-color: #268C8A;">
                            <children>
@@ -150,9 +148,9 @@
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label text="Edad" textFill="WHITE">
+                              <Label fx:id="labelAge" text="Edad" textFill="WHITE">
                                  <font>
-                                    <Font name="System Bold" size="40.0" />
+                                    <Font name="System Bold" size="20.0" />
                                  </font>
                                  <HBox.margin>
                                     <Insets left="20.0" />
@@ -165,9 +163,9 @@
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label text="Nombre" textFill="WHITE" wrapText="true">
+                              <Label fx:id="labelName" text="Nombre" textFill="WHITE" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="40.0" />
+                                    <Font name="System Bold" size="20.0" />
                                  </font>
                                  <HBox.margin>
                                     <Insets right="20.0" />
@@ -177,50 +175,7 @@
                         </HBox>
                      </children>
                   </HBox>
-                  <HBox minHeight="360.0">
-                     <children>
-                        <VBox alignment="TOP_CENTER" prefWidth="150.0" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </HBox.margin>
-                           <children>
-                              <Label alignment="CENTER" minHeight="60.0" minWidth="150.0" text="Sintomas" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                              <VBox alignment="TOP_CENTER" minHeight="300.0">
-                                 <children>
-                                    <Label text="Sintoma" textFill="WHITE" />
-                                    <Label layoutX="63.0" layoutY="10.0" text="Sintoma" textFill="WHITE" />
-                                    <Label layoutX="63.0" layoutY="27.0" text="Sintoma" textFill="WHITE" />
-                                    <Label layoutX="63.0" layoutY="44.0" text="Sintoma" textFill="WHITE" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </VBox>
-                        <VBox alignment="TOP_CENTER" prefWidth="150.0" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </HBox.margin>
-                           <children>
-                              <Label alignment="CENTER" minHeight="60.0" minWidth="150.0" text="Enfermedades" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                              <VBox alignment="TOP_CENTER" minHeight="300.0">
-                                 <children>
-                                    <Label alignment="TOP_CENTER" text="Enfermedad" textFill="WHITE" />
-                                    <Label alignment="TOP_CENTER" layoutX="53.0" layoutY="10.0" text="Enfermedad" textFill="WHITE" />
-                                    <Label alignment="TOP_CENTER" layoutX="53.0" layoutY="27.0" text="Enfermedad" textFill="WHITE" />
-                                    <Label alignment="TOP_CENTER" layoutX="53.0" layoutY="44.0" text="Enfermedad" textFill="WHITE" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
+                  <HBox minHeight="360.0" />
                </children>
                <VBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

@@ -11,4 +11,10 @@ module org.example.indiecure_aplication {
     exports org.example.indiecure_aplication;
     opens org.example.indiecure_aplication.Controller to javafx.fxml;
     exports org.example.indiecure_aplication.Controller;
+    opens org.example.indiecure_aplication.Model.Classes to javafx.fxml;
+    exports org.example.indiecure_aplication.Model.Classes;
+    opens org.example.indiecure_aplication.Model.Utils to javafx.fxml;
+    exports org.example.indiecure_aplication.Model.Utils;
+    opens org.example.indiecure_aplication.Model.Exceptions to javafx.fxml;
+    exports org.example.indiecure_aplication.Model.Exceptions;
 }
