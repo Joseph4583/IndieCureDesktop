@@ -150,9 +150,9 @@ public class IllnessScreen implements Initializable {
                 Optional<ButtonType> result = dialog.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     Severity severity = controller.getComboBox_illnessDialog_severity();
-                    String nameField = controller.getTextField_illnessDialog_name().getText().toString();
+                    String nameField = controller.getTextField_illnessDialog_name().replaceAll("[^a-zA-Z\\s]", "").trim();
                     ArrayList<TextField> testList = controller.getTestList();
-                    if (!checks.checkIfEmpty(testList) && !nameField.isEmpty()) {
+                    if (!checks.checkIfEmpty(testList) && !nameField.isBlank()) {
                         illness.setName(nameField);
                         illness.setSeverity(severity);
                         ArrayList<MedicalTest> arraySymptomsList = controller.checkAndGetMedicalTests();

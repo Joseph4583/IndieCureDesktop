@@ -120,6 +120,8 @@ public class PacientScreen implements Initializable {
             pacientListView.setItems(items);
         }
 
+
+
         pacientListView.setOnMouseClicked(event -> {
             String selectedItem = pacientListView.getSelectionModel().getSelectedItem();
             if (!Objects.isNull(selectedItem)) {
@@ -130,7 +132,6 @@ public class PacientScreen implements Initializable {
                     }
                 }
             }
-
         });
     }
 
@@ -155,21 +156,25 @@ public class PacientScreen implements Initializable {
             while (!loopExit) {
                 Optional<ButtonType> result  = dialog.showAndWait();
                 if(result.get() == ButtonType.OK){
-                    String nameField = controller.getPacienteDialog_name();
-                    String ageField = controller.getPacienteDialog_age();
-                    if(!nameField.isEmpty() && !ageField.isEmpty()){
+                    String nameField = controller.getPacienteDialog_name().replaceAll("[^a-zA-Z\\s]", "").trim();
+                    int ageField = Integer.parseInt(controller.getPacienteDialog_age());
+                    if(!nameField.isBlank() && !(ageField < 0) && !(ageField > 150)){
                         pacient.setName(nameField);
-                        pacient.setAge(Integer.parseInt(ageField));
+                        pacient.setAge(ageField);
                         loopExit = true;
                     } else {
-                        alertDialog.AlertWarning("Algun campo esta vacio");
+                        alertDialog.AlertWarning("Algun campo esta vacio o la edad es incorrecta");
                     }
                 } else if (result.get() == ButtonType.CANCEL) {
                     pacient = new Pacient();
                     loopExit = true;
                 }
             }
-        } catch(Exception e){
+        } catch (NumberFormatException nfe) {
+            alertDialog.AlertWarning("la edad tiene que ser un numero y sin decimales");
+            showDialogo(mode);
+        }
+        catch(Exception e){
             e.printStackTrace();
         }
     }

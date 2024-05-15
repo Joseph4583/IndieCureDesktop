@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -17,11 +18,13 @@ import org.example.indiecure_aplication.Model.Classes.Severity;
 import org.example.indiecure_aplication.Model.Exceptions.DuplicatedResultException;
 import org.example.indiecure_aplication.Model.Utils.Checks;
 
+import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class IllnessDialog {
+public class IllnessDialog implements Initializable {
 
     @FXML
     private GridPane illnessDialogPane;
@@ -220,8 +223,8 @@ public class IllnessDialog {
         return testArrayList;
     }
 
-    public TextField getTextField_illnessDialog_name() {
-        return textField_illnessDialog_name;
+    public String getTextField_illnessDialog_name() {
+        return textField_illnessDialog_name.getText().toString();
     }
 
     public void setTextField_illnessDialog_name(TextField textField_illnessDialog_name) {
@@ -252,4 +255,13 @@ public class IllnessDialog {
         this.testList = testList;
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        textField_illnessDialog_name.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 30) {
+                String copy = textField_illnessDialog_name.getText().toString().substring(0, 30);
+                textField_illnessDialog_name.setText(copy);
+            }
+        });
+    }
 }

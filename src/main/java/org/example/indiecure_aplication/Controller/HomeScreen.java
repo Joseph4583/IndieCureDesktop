@@ -44,11 +44,9 @@ public class HomeScreen implements Initializable {
         notificationListView.setItems(items);
         ScheduledExecutorService delayset = Executors.newScheduledThreadPool(1);
         delayset.scheduleAtFixedRate(() -> {
-            System.out.println("sigo en bucle");
             if (!Objects.isNull(doctor)) {
                 labelDoctor.setText(doctor.getName() + " --- " + doctor.getSpecializations());
                 refreshDiagnosticList();
-                System.out.println("ya no estoy en bucle");
                 delayset.shutdown();
             }
         }, 0, 1000, TimeUnit.MICROSECONDS);
@@ -67,12 +65,14 @@ public class HomeScreen implements Initializable {
                             labelSymptom.setText(symptoms);
                             labelTest.setText("---");
                             tagTest.setText("---");
+                            tageSynptom.setText("Sintomas");
                         } else if (diagnosticHelper.isConfirmed()) {
                             tagGeneral.setText("Diagnostico confirmado");
                             String symptoms = "";
                             for (Symptom symptom: diagnosticHelper.getSymptomsList()) {
                                 symptoms += symptom.getName() + "\n";
                             }
+                            tageSynptom.setText("Sintomas");
                             labelSymptom.setText(symptoms);
                             String medicalTests = "";
                             for (MedicalTest medicalTest: diagnosticHelper.getIllness().getMedicalTestsList()) {
@@ -93,6 +93,7 @@ public class HomeScreen implements Initializable {
                             }
                             labelTest.setText(medicalTests);
                             tagTest.setText("Pruebas medicas");
+                            tageSynptom.setText("Sintomas");
                         }
                     }
                 }

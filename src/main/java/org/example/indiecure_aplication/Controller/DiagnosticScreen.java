@@ -112,10 +112,12 @@ public class DiagnosticScreen implements Initializable {
         id_enfermedad.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, Integer>("idIllness"));
         nombre_enfermedad.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, String>("nameIllness"));
         sintomas.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, String>("symptoms"));
-
-        table.setItems(items);
-
         refreshDiagnosticList();
+
+        for (Diagnostic diagnistocHelper: diagnosticArrayList){
+            items.add(new DiagnosticTransformed(diagnistocHelper));
+        }
+        table.setItems(items);
     }
 
     public void showDialogo(String mode) {
@@ -202,7 +204,6 @@ public class DiagnosticScreen implements Initializable {
             for (Diagnostic diagnosticHelper : diagnosticArrayList){
                 if (diagnosticHelper.getId() == diagnosticSelected.getId()) {
                     diagnostic = diagnosticHelper;
-
                 }
             }
             showDialogo("mod");
@@ -211,7 +212,9 @@ public class DiagnosticScreen implements Initializable {
                     diagnostic.modifyOnDB();
                     refreshDiagnosticList();
                     int index = table.getSelectionModel().getSelectedIndex();
+                    System.out.println(items);
                     items.set(index, new DiagnosticTransformed(diagnostic));
+                    System.out.println(items);
                 } else {
                     throw new CancelDialogException("Paciente cancelado");
                 }
@@ -263,7 +266,6 @@ public class DiagnosticScreen implements Initializable {
                 diagnistocHelper.findAndAssingSymptoms();
                 diagnistocHelper.setConfirmed(result.getBoolean("is_confirmed"));
                 diagnosticArrayList.add(diagnistocHelper);
-                items.add(new DiagnosticTransformed(diagnistocHelper));
             }
             // Cierra los recursos
             result.close();
@@ -275,7 +277,7 @@ public class DiagnosticScreen implements Initializable {
     }
 
     public void searchEntry(ActionEvent actionEvent) {
-        if (textFieldSearch.getText().isEmpty()){
+        if (textFieldSearch.getText().isBlank()){
             table.setItems(items);
         } else {
             if (radioBtnPacient.isSelected()) {

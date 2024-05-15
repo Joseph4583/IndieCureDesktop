@@ -161,7 +161,7 @@
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label fx:id="tagGeneral" text="Tag" textFill="WHITE" wrapText="true">
+                              <Label fx:id="tagGeneral" text="---" textFill="WHITE" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -183,14 +183,14 @@
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
                            <children>
-                              <Label fx:id="tageSynptom" alignment="CENTER" minHeight="60.0" minWidth="150.0" text="TagSintomas" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                              <Label fx:id="tageSynptom" alignment="CENTER" minHeight="60.0" minWidth="150.0" text="---" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                               <VBox alignment="TOP_CENTER" minHeight="300.0" prefHeight="300.0" prefWidth="269.0">
                                  <children>
-                                    <Label fx:id="labelSymptom" text="Sintoma" textFill="WHITE" />
+                                    <Label fx:id="labelSymptom" text="---" textFill="WHITE" />
                                  </children>
                               </VBox>
                            </children>
@@ -200,14 +200,14 @@
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
                            <children>
-                              <Label fx:id="tagTest" alignment="CENTER" minHeight="60.0" minWidth="150.0" text="TagPruebas" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                              <Label fx:id="tagTest" alignment="CENTER" minHeight="60.0" minWidth="150.0" text="---" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                               <VBox alignment="TOP_CENTER" minHeight="300.0">
                                  <children>
-                                    <Label fx:id="labelTest" alignment="TOP_CENTER" text="Prueba" textFill="WHITE" />
+                                    <Label fx:id="labelTest" alignment="TOP_CENTER" text="---" textFill="WHITE" />
                                  </children>
                               </VBox>
                            </children>

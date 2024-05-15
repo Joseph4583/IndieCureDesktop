@@ -23,7 +23,7 @@ public class Checks {
     public boolean checkIfEmpty(ArrayList<TextField> array){
         boolean empty = false;
         for (TextField textField : array) {
-            if (textField.getText().isEmpty()) {
+            if (textField.getText().isBlank()) {
                 empty = true;
             }
         }

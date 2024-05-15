@@ -142,9 +142,9 @@ public class SymptomScreen implements Initializable {
             while (!loopExit) {
                 Optional<ButtonType> result  = dialog.showAndWait();
                 if(result.get() == ButtonType.OK){
-                    String nameField = controller.getTextField_symptomDialog_name().getText().toString();
-                    String descriptionField = controller.getTextArea_symptomDialog_description().getText().toString();
-                    if(!nameField.isEmpty() && !descriptionField.isEmpty()){
+                    String nameField = controller.getTextField_symptomDialog_name().replaceAll("[^a-zA-Z\\s]", "").trim();
+                    String descriptionField = controller.getTextArea_symptomDialog_description().trim();
+                    if(!nameField.isEmpty() && !descriptionField.isBlank()){
                         symptom.setName(nameField);
                         symptom.setDescription(descriptionField);
                         loopExit = true;
