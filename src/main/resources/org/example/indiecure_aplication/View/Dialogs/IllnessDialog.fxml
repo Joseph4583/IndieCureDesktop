@@ -53,7 +53,6 @@
                      </font>
                   </Label>
                   <TextField fx:id="textField_illnessDialog_name" prefWidth="200.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1" />
-                  <TextField fx:id="textField_illnessDialog_test_1" prefWidth="200.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <ComboBox fx:id="comboBox_illnessDialog_severity" prefHeight="25.0" prefWidth="220.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                   <Button fx:id="buttonAdd1" mnemonicParsing="false" onAction="#addTestOnIllness" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50%; -fx-background-color: #268C8A;" text="+" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <font>
@@ -65,6 +64,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
+                  <ComboBox fx:id="comboBox_illnessDialog_Test_1" prefHeight="25.0" prefWidth="220.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </content>

@@ -40,6 +40,40 @@ public class PacientScreen implements Initializable {
     private Label labelName, labelAge;
     ObservableList<String> items = FXCollections.observableArrayList();
 
+    /**
+     * Starts the ListView of Illnesses and assing the mouseClick Event to it
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        refreshPacientList();
+        if (pacientArrayList.size() > 0) {
+            for (Pacient pacientHelper : pacientArrayList) {
+                items.add(pacientHelper.getId() + " --- " + pacientHelper.getName());
+            }
+            pacientListView.setItems(items);
+        }
+
+        pacientListView.setOnMouseClicked(event -> {
+            String selectedItem = pacientListView.getSelectionModel().getSelectedItem();
+            if (!Objects.isNull(selectedItem)) {
+                for (Pacient pacientHelper: pacientArrayList){
+                    if (pacientHelper.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
+                        labelName.setText("Nombre: " + pacientHelper.getName());
+                        labelAge.setText("Edad: " + pacientHelper.getAge());
+                    }
+                }
+            }
+        });
+    }
+
+    /*======================FXML CLICK EVENTS======================*/
     public void switchScreenToHome(ActionEvent actionEvent) {
         switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
     }
@@ -86,6 +120,17 @@ public class PacientScreen implements Initializable {
             alertDialog.AlertInfo("Los medicos especialistas no pueden entrar aqui");
         }
     }
+
+    public void goToProfile(ActionEvent actionEvent) {
+        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
+    }
+
+    public void closeSession(ActionEvent actionEvent) {
+        switcher.LogOff(stage);
+    }
+    /*============================================*/
+
+    /*======================GETTERS AND SETTERS======================*/
     public Stage getStage() {
         return stage;
     }
@@ -101,40 +146,13 @@ public class PacientScreen implements Initializable {
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
+    /*============================================*/
 
-    public void goToProfile(ActionEvent actionEvent) {
-        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
-    }
-
-    public void closeSession(ActionEvent actionEvent) {
-        switcher.LogOff(stage);
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        refreshPacientList();
-        if (pacientArrayList.size() > 0) {
-            for (Pacient pacientHelper : pacientArrayList) {
-                items.add(pacientHelper.getId() + " --- " + pacientHelper.getName());
-            }
-            pacientListView.setItems(items);
-        }
-
-
-
-        pacientListView.setOnMouseClicked(event -> {
-            String selectedItem = pacientListView.getSelectionModel().getSelectedItem();
-            if (!Objects.isNull(selectedItem)) {
-                for (Pacient pacientHelper: pacientArrayList){
-                    if (pacientHelper.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
-                        labelName.setText("Nombre: " + pacientHelper.getName());
-                        labelAge.setText("Edad: " + pacientHelper.getAge());
-                    }
-                }
-            }
-        });
-    }
-
+    /*======================SCREEN FUNCIONALITY======================*/
+    /**
+     * this methods shows and process the content from PacientDialog
+     * @param mode
+     */
     public void showDialogo(String mode) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("View/Dialogs/PacientDialog.fxml"));
@@ -178,6 +196,11 @@ public class PacientScreen implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * pops the Dialog and adds an illness entry into the databse table (illness).
+     * @param actionEvent
+     */
     public void addPacient(ActionEvent actionEvent) {
         showDialogo("add");
         try {
@@ -198,35 +221,16 @@ public class PacientScreen implements Initializable {
             }
 
         } catch (AlreadyExistingObject aeo) {
-            alertDialog.AlertError(aeo.toString());
+            alertDialog.AlertError("El paciente ya existe");
         } catch (CancelDialogException cde) {
 
         }
     }
-    public void removePacient(ActionEvent actionEvent) {
-        if (!pacientListView.getSelectionModel().isEmpty()) {
-            String pacientStr = pacientListView.getSelectionModel().getSelectedItem();
-            for (Pacient pacienteHelper : pacientArrayList){
-                if (pacienteHelper.getId() == Integer.parseInt(pacientStr.split(" ")[0])) {
-                    pacient = pacienteHelper;
-                }
-            }
-            try {
-                if (pacient.checkIfExistInDB()) {
-                    int index = pacientListView.getSelectionModel().getSelectedIndex();
-                    pacient.removeFromDB();
-                    refreshPacientList();
-                    items.remove(index);
-                } else {
-                    throw new NonExistingObject("Este paciente no existe en la base de datos");
-                }
-            } catch (NonExistingObject neo) {
-                alertDialog.AlertError(neo.toString());
-            }
-        } else {
-            alertDialog.AlertWarning("No hay ningun paciente seleccionado");
-        }
-    }
+
+    /**
+     * pops the Dialog and adds an pacient entry into the databse table (pacient).
+     * @param actionEvent
+     */
     public void modPacient(ActionEvent actionEvent){
         if (!pacientListView.getSelectionModel().isEmpty()) {
             String pacientStr = pacientListView.getSelectionModel().getSelectedItem();
@@ -254,6 +258,38 @@ public class PacientScreen implements Initializable {
         }
     }
 
+    /**
+     * pops the Dialog and removes pacient entry from the databse table (pacient)
+     * @param actionEvent
+     */
+    public void removePacient(ActionEvent actionEvent) {
+        if (!pacientListView.getSelectionModel().isEmpty()) {
+            String pacientStr = pacientListView.getSelectionModel().getSelectedItem();
+            for (Pacient pacienteHelper : pacientArrayList){
+                if (pacienteHelper.getId() == Integer.parseInt(pacientStr.split(" ")[0])) {
+                    pacient = pacienteHelper;
+                }
+            }
+            try {
+                if (pacient.checkIfExistInDB()) {
+                    int index = pacientListView.getSelectionModel().getSelectedIndex();
+                    pacient.removeFromDB();
+                    refreshPacientList();
+                    items.remove(index);
+                } else {
+                    throw new NonExistingObject("Este paciente no existe en la base de datos");
+                }
+            } catch (NonExistingObject neo) {
+                alertDialog.AlertError("Este paciente no existe en la base de datos");
+            }
+        } else {
+            alertDialog.AlertWarning("No hay ningun paciente seleccionado");
+        }
+    }
+
+    /**
+     * refresh the listView with database content of table (pacient)
+     */
     public void refreshPacientList() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb", "root", "");
@@ -268,7 +304,7 @@ public class PacientScreen implements Initializable {
                 pacientHelper.setAge(result.getInt("age"));
                 pacientArrayList.add(pacientHelper);
             }
-            // Cierra los recursos
+            // close resources
             result.close();
             sentence.close();
             connection.close();
@@ -276,4 +312,5 @@ public class PacientScreen implements Initializable {
             e.printStackTrace();
         }
     }
+    /*============================================*/
 }

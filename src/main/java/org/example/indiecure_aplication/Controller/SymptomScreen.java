@@ -39,6 +39,40 @@ public class SymptomScreen implements Initializable {
     @FXML
     private Label labelName, labelDescription;
     ObservableList<String> items = FXCollections.observableArrayList();
+
+    /**
+     * Starts the ListView of Illnesses and assing the mouseClick Event to it
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        refreshSymptomList();
+        if (symptomArrayList.size() > 0) {
+            for (Symptom symptomHelper : symptomArrayList) {
+                items.add(symptomHelper.getId() + " --- " + symptomHelper.getName());
+            }
+            symptomListView.setItems(items);
+        }
+        symptomListView.setOnMouseClicked(event -> {
+            String selectedItem = symptomListView.getSelectionModel().getSelectedItem();
+            if (!Objects.isNull(selectedItem)) {
+                for (Symptom symptomHelper: symptomArrayList){
+                    if (symptomHelper.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
+                        labelName.setText("Nombre: " + symptomHelper.getName());
+                        labelDescription.setText(symptomHelper.getDescription());
+                    }
+                }
+            }
+        });
+    }
+
+    /*======================FXML CLICK EVENTS======================*/
     public void switchScreenToHome(ActionEvent actionEvent) {
         switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
     }
@@ -90,7 +124,9 @@ public class SymptomScreen implements Initializable {
     public void closeSession(ActionEvent actionEvent) {
         switcher.LogOff(stage);
     }
+    /*============================================*/
 
+    /*======================GETTERS AND SETTERS======================*/
     public Doctor getDoctor() {
         return doctor;
     }
@@ -99,28 +135,20 @@ public class SymptomScreen implements Initializable {
         this.doctor = doctor;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        refreshSymptomList();
-        if (symptomArrayList.size() > 0) {
-            for (Symptom symptomHelper : symptomArrayList) {
-                items.add(symptomHelper.getId() + " --- " + symptomHelper.getName());
-            }
-            symptomListView.setItems(items);
-        }
-        symptomListView.setOnMouseClicked(event -> {
-            String selectedItem = symptomListView.getSelectionModel().getSelectedItem();
-            if (!Objects.isNull(selectedItem)) {
-                for (Symptom symptomHelper: symptomArrayList){
-                    if (symptomHelper.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
-                        labelName.setText("Nombre: " + symptomHelper.getName());
-                        labelDescription.setText(symptomHelper.getDescription());
-                    }
-                }
-            }
-        });
+    public Stage getStage() {
+        return stage;
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+    /*============================================*/
+
+    /*======================SCREEN FUNCIONALITY======================*/
+    /**
+     * this methods shows and process the content from SymptomDialog
+     * @param mode
+     */
     public void showDialogo(String mode) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("View/Dialogs/SymptomDialog.fxml"));
@@ -160,6 +188,11 @@ public class SymptomScreen implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * pops the Dialog and adds an symptom entry into the databse table (symptom).
+     * @param actionEvent
+     */
     public void addSymptom(ActionEvent actionEvent) {
         showDialogo("add");
         try {
@@ -180,12 +213,16 @@ public class SymptomScreen implements Initializable {
             }
 
         } catch (AlreadyExistingObject aeo) {
-            alertDialog.AlertError(aeo.toString());
+            alertDialog.AlertError("El paciente ya existe");
         } catch (CancelDialogException cde) {
 
         }
     }
 
+    /**
+     * pops the Dialog and adds an symptom entry into the databse table (symptom).
+     * @param actionEvent
+     */
     public void modSymptom(ActionEvent actionEvent) {
         if (!symptomListView.getSelectionModel().isEmpty()) {
             String symptomStr = symptomListView.getSelectionModel().getSelectedItem();
@@ -219,6 +256,10 @@ public class SymptomScreen implements Initializable {
         }
     }
 
+    /**
+     * pops the Dialog and removes symptom entry from the databse table (symptom)
+     * @param actionEvent
+     */
     public void removeSymptom(ActionEvent actionEvent) {
         if (!symptomListView.getSelectionModel().isEmpty()) {
             String symptomStr = symptomListView.getSelectionModel().getSelectedItem();
@@ -242,21 +283,16 @@ public class SymptomScreen implements Initializable {
                     throw new NonExistingObject("Este paciente no existe en la base de datos");
                 }
             } catch (NonExistingObject neo) {
-                alertDialog.AlertError(neo.toString());
+                alertDialog.AlertError("Este paciente no existe en la base de datos");
             }
         } else {
             alertDialog.AlertWarning("No hay ningun paciente seleccionado");
         }
     }
 
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
+    /**
+     * refresh the listView with database content of table (symptom)
+     */
     public void refreshSymptomList() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb", "root", "");
@@ -280,6 +316,4 @@ public class SymptomScreen implements Initializable {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -42,73 +42,17 @@ public class IllnessDiagnosisScreen implements Initializable {
     AlertDialog alertDialog = new AlertDialog();
     HashMap<Integer, Double> valueMap = new HashMap<>();
     ObservableList<String> items = FXCollections.observableArrayList();
-    public void switchScreenToHome(ActionEvent actionEvent) {
-        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
-    }
 
-    public void switchScreenToPacient(ActionEvent actionEvent) {
-        switcher.screenSwitch("PacientScreen.fxml", stage, doctor);
-    }
-
-    public void switchScreenToIllnessDiagnosis(ActionEvent actionEvent) {
-        if (!doctor.getSpecializations().equals("Especial")) {
-            switcher.screenSwitch("IllnessDiagnosisScreen.fxml", stage, doctor);
-        } else {
-            alertDialog.AlertInfo("Los medicos especialistas no pueden entrar aqui");
-        }
-    }
-
-    public void switchScreenToIllnesstesting(ActionEvent actionEvent) {
-        if (!doctor.getSpecializations().equals("Cabezera")) {
-            switcher.screenSwitch("IllnessTestingScreen.fxml", stage, doctor);
-        } else {
-            alertDialog.AlertInfo("los medicos de cabezera no pueden entrar aqui");
-        }
-    }
-    public void switchScreenToSymptom(ActionEvent actionEvent) {
-        if (doctor.getSpecializations().equals("Admin")) {
-            switcher.screenSwitch("SymptomScreen.fxml", stage, doctor);
-        } else {
-            alertDialog.AlertInfo("no tienes permisos de administrador");
-        }
-    }
-
-    public void switchScreenToIllness(ActionEvent actionEvent) {
-        if (doctor.getSpecializations().equals("Admin")) {
-            switcher.screenSwitch("IllnessScreen.fxml", stage, doctor);
-        } else {
-            alertDialog.AlertInfo("no tienes permisos de administrador");
-        }
-
-    }
-
-    public void switchScreenToDiagnostic(ActionEvent actionEvent) {
-    }
-
-    public void goToProfile(ActionEvent actionEvent) {
-        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
-    }
-
-    public void closeSession(ActionEvent actionEvent) {
-        switcher.LogOff(stage);
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
+    /**
+     * Inizialize the screen with fields turn off and sets the ListView MouseEvent.
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refreshDiagnosticList();
@@ -149,16 +93,9 @@ public class IllnessDiagnosisScreen implements Initializable {
                             strSymptom = strSymptom + symptomHelper.getName() + "\n";
                         }
                         labelSymptoms.setText(strSymptom);
-
-                        ArrayList<Illness> illnessArrayListHelper = new ArrayList<>();
+                        refreshIllnessList();
                         for (Symptom symptomHelper : diagnosticHelper.getSymptomsList()){
-                            for (Illness illnessHelper : illnessArrayList) {
-                                for (Symptom symptomHelper2: illnessHelper.getSymptomsList()) {
-                                    if(symptomHelper2.getName().equals(symptomHelper.getName())){
-                                        illnessArrayListHelper.add(illnessHelper);
-                                    }
-                                }
-                            }
+                            ArrayList<Illness> illnessArrayListHelper = filterIllness(symptomHelper);
                             illnessArrayList = illnessArrayListHelper;
                         }
 
@@ -177,6 +114,7 @@ public class IllnessDiagnosisScreen implements Initializable {
                         illnessArrayList = sortProbabilities();
 
                         if (illnessArrayList.size() != 0) {
+                            turnOffFields();
                             for (int i = 0; i < illnessArrayList.size(); i++) {
                                 if (i <= 4) {
                                     labelArrayList.get(i).setVisible(true);
@@ -193,26 +131,124 @@ public class IllnessDiagnosisScreen implements Initializable {
         });
     }
 
+    /*======================FXML CLICK EVENTS======================*/
+    public void switchScreenToHome(ActionEvent actionEvent) {
+        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
+    }
+
+    public void switchScreenToPacient(ActionEvent actionEvent) {
+        switcher.screenSwitch("PacientScreen.fxml", stage, doctor);
+    }
+
+    public void switchScreenToIllnessDiagnosis(ActionEvent actionEvent) {
+    }
+
+    public void switchScreenToIllnesstesting(ActionEvent actionEvent) {
+        if (!doctor.getSpecializations().equals("Cabezera")) {
+            switcher.screenSwitch("IllnessTestingScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("los medicos de cabezera no pueden entrar aqui");
+        }
+    }
+    public void switchScreenToSymptom(ActionEvent actionEvent) {
+        if (doctor.getSpecializations().equals("Admin")) {
+            switcher.screenSwitch("SymptomScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("no tienes permisos de administrador");
+        }
+    }
+
+    public void switchScreenToIllness(ActionEvent actionEvent) {
+        if (doctor.getSpecializations().equals("Admin")) {
+            switcher.screenSwitch("IllnessScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("no tienes permisos de administrador");
+        }
+
+    }
+
+    public void switchScreenToDiagnostic(ActionEvent actionEvent) {
+        if (!doctor.getSpecializations().equals("Especial")) {
+            switcher.screenSwitch("DiagnosticScreen.fxml", stage, doctor);
+        } else {
+            alertDialog.AlertInfo("Los medico especialistas no pueden entrar aqui");
+        }
+    }
+
+    public void goToProfile(ActionEvent actionEvent) {
+        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
+    }
+
+    public void closeSession(ActionEvent actionEvent) {
+        switcher.LogOff(stage);
+    }
     public void SendIllness1(ActionEvent actionEvent) {
         sendIllnessToDiagnostic(0);
     }
-
     public void SendIllness2(ActionEvent actionEvent) {
         sendIllnessToDiagnostic(1);
     }
-
     public void SendIllness3(ActionEvent actionEvent) {
         sendIllnessToDiagnostic(2);
     }
-
     public void SendIllness4(ActionEvent actionEvent) {
         sendIllnessToDiagnostic(3);
     }
-
     public void SendIllness5(ActionEvent actionEvent) {
         sendIllnessToDiagnostic(4);
     }
+    /*============================================*/
 
+    /*======================GETTERS AND SETTERS======================*/
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+    /*============================================*/
+
+    /*======================SCREEN FUNCIONALITY======================*/
+    /**
+     * disable all fields visibility
+     */
+    private void turnOffFields() {
+        for (int i = 0; i < 5; i++) {
+            labelArrayList.get(i).setVisible(false);
+            progressBarArrayList.get(i).setVisible(false);
+            buttonArrayList.get(i).setVisible(false);
+        }
+    }
+
+    /**
+     * filters the illness so the remaining ones will be only those with the matching symptoms
+     * @param symptom
+     * @return
+     */
+    private ArrayList<Illness> filterIllness (Symptom symptom) {
+        ArrayList<Illness> illnessArrayListHelperF = new ArrayList<>();
+        for (Illness illnessHelper : illnessArrayList) {
+            for (Symptom symptomHelper2: illnessHelper.getSymptomsList()) {
+                if(symptomHelper2.getName().equals(symptom.getName())){
+                    illnessArrayListHelperF.add(illnessHelper);
+                }
+            }
+        }
+        return illnessArrayListHelperF;
+    }
+
+    /**
+     * refresh the listView with database content of table (diagnostic)
+     */
     public void refreshDiagnosticList() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb", "root", "");
@@ -230,9 +266,8 @@ public class IllnessDiagnosisScreen implements Initializable {
                     diagnosticArrayList.add(diagnistocHelper);
                     items.add(diagnistocHelper.getId() + " -- " + diagnistocHelper.getPacient().getName());
                 }
-
             }
-            // Cierra los recursos
+            //close resources
             result.close();
             sentence.close();
             connection.close();
@@ -241,6 +276,9 @@ public class IllnessDiagnosisScreen implements Initializable {
         }
     }
 
+    /**
+     * refresh the ArrayList with database content of table (illness)
+     */
     public void refreshIllnessList() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb", "root", "");
@@ -268,6 +306,10 @@ public class IllnessDiagnosisScreen implements Initializable {
         }
     }
 
+    /**
+     * orders the possible illnesses from the most possible to the less possible.
+     * @return
+     */
     private ArrayList<Illness> sortProbabilities(){
 
         ArrayList<Illness> sortedIllnessList = new ArrayList<>();
@@ -284,6 +326,10 @@ public class IllnessDiagnosisScreen implements Initializable {
         return  sortedIllnessList;
     };
 
+    /**
+     * modifies the diagnostic in the database so it can appear in the home screen.
+     * @param index
+     */
     private void sendIllnessToDiagnostic(int index) {
         String selectedItem = diagnosticListView.getSelectionModel().getSelectedItem();
         if(!Objects.isNull(selectedItem)) {
@@ -291,10 +337,12 @@ public class IllnessDiagnosisScreen implements Initializable {
                 if (diagnosticHelper.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
                     diagnosticHelper.setIllness(illnessArrayList.get(index));
                     diagnosticHelper.modifyOnDB();
+                    alertDialog.AlertInfo("Enfermedad " + illnessArrayList.get(index).getName() + " ha asido asignada al diagnostico");
                 }
             }
         }
     }
+    /*============================================*/
 }
 
 

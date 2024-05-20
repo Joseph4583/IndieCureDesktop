@@ -54,18 +54,16 @@ public class IllnessTestingScreen implements Initializable {
         testingListView.setOnMouseClicked(event -> {
             String selectedItem = testingListView.getSelectionModel().getSelectedItem();
             int count = 1;
+            gridPaneTest.getChildren().removeIf(node -> GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) != 0);
+            while (gridPaneTest.getRowConstraints().size() > 1) {
+                gridPaneTest.getRowConstraints().remove(1);
+            }
             for (Diagnostic diagnostic: diagnosticArrayList) {
+                System.out.println(Integer.parseInt(selectedItem.split(" ")[0]));
                 if (diagnostic.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
-
-                    //arreglar este for para que no se salte la primera prueba medica
                     for (MedicalTest medicalTest : diagnostic.getIllness().getMedicalTestsList()) {
-                         if (count == 1) {
-                            labelTest1.setText(medicalTest.getName());
-                            count++;
-                        } else {
-                            addField(count, medicalTest);
-                            count++;
-                        }
+                        addField(count, medicalTest);
+                        count++;
                     }
                 }
             }
@@ -189,7 +187,6 @@ public class IllnessTestingScreen implements Initializable {
             ResultSet result = sentence.executeQuery(query);
             diagnosticArrayList = new ArrayList<>();
             while (result.next()) {
-
                 Diagnostic diagnistocHelper = new Diagnostic();
                 diagnistocHelper.setId(result.getInt("id"));
                 diagnistocHelper.findAndAssingPacient();

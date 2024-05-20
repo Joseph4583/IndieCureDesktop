@@ -14,9 +14,13 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
+        //loads the FXML file
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("View/SessionLoginScreen.fxml"));
         Parent root = fxmlLoader.load();
         SessionLoginScreen controller = fxmlLoader.getController();
+
+        //gets the screen size so the app stars with the user screen size set.
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         controller.setStage(stage);
         Scene scene = new Scene(root, 320, 240);
@@ -24,6 +28,8 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setHeight(screenBounds.getHeight());
         stage.setWidth(screenBounds.getWidth());
+
+        //shows the screen
         stage.show();
     }
 

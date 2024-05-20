@@ -11,6 +11,9 @@ import org.example.indiecure_aplication.Main;
 
 import java.io.IOException;
 
+/**
+ * this class handles the screen switches for using the same state and dont open a new window
+ */
 public class ScreenSwitcher {
     HomeScreen homeScreen;
     PacientScreen pacientScreen;
@@ -23,13 +26,18 @@ public class ScreenSwitcher {
     SessionLoginScreen sessionLoginScreen;
 
 
-
-    public void screenSwitch (String archivo, Stage stage, Doctor doctor){
+    /**
+     * Handles the switches between screens base on the file
+     * @param file of the FXML path
+     * @param stage of the window
+     * @param doctor to check the permissions
+     */
+    public void screenSwitch (String file, Stage stage, Doctor doctor){
         try {
             stage.setTitle("IndieCure");
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("View/Screens/" + archivo));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("View/Screens/" + file));
             Scene scene = new Scene(loader.load());
-            switch (archivo) {
+            switch (file) {
                 case "HomeScreen.fxml": homeScreen = loader.getController(); homeScreen.setStage(stage); homeScreen.setDoctor(doctor); break;
                 case "PacientScreen.fxml": pacientScreen = loader.getController(); pacientScreen.setStage(stage); pacientScreen.setDoctor(doctor); break;
                 case "SymptomScreen.fxml":
@@ -57,7 +65,7 @@ public class ScreenSwitcher {
                     illnessTestingScreen.setStage(stage);
                     illnessTestingScreen.setDoctor(doctor);
                     break;
-                default: System.out.print("Error al pasar archivo");
+                default: System.out.print("Error al pasar file");
             }
             stage.setScene(scene);
             stage.show();
@@ -67,6 +75,10 @@ public class ScreenSwitcher {
         }
     }
 
+    /**
+     * close the user session.
+     * @param stage
+     */
     public void LogOff(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("View/SessionLoginScreen.fxml"));

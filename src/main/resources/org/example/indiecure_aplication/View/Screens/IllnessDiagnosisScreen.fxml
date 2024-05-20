@@ -42,7 +42,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#switchScreenToPacient" text="pacientes" />
                         <MenuItem mnemonicParsing="false" onAction="#switchScreenToSymptom" text="sintomas" />
                         <MenuItem mnemonicParsing="false" onAction="#switchScreenToIllness" text="enfermedades" />
-                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToDiagnostic" text="diagnostics" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchScreenToDiagnostic" text="diagnosticos" />
                      </items>
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="WHEELCHAIR" size="45" />

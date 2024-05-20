@@ -1,5 +1,8 @@
 package org.example.indiecure_aplication.Model.Classes;
 
+/**
+ * this class is an assistance class for diagnostic to insert diagnostic properties into the diagnosticScreen tableView
+ */
 public class DiagnosticTransformed {
 
     int id;
@@ -18,6 +21,10 @@ public class DiagnosticTransformed {
         this.symptoms = symptoms;
     }
 
+    /**
+     * this constructor transforms Diagnostic class properties into strigs for the this class propierties
+     * @param diagnostic
+     */
     public DiagnosticTransformed(Diagnostic diagnostic){
         this.id = diagnostic.getId();
         this.idPacient = diagnostic.getPacient().getId();

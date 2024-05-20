@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * this class controls the thread attach to the homeScreen's clock
+ */
 public class IndicureThread extends Thread {
 
     public Boolean stop = false;

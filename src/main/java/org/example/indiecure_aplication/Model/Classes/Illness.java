@@ -22,6 +22,7 @@ public class Illness extends IndieCureClass {
         this.medicalTestsList = medicalTestsList;
     }
 
+    /*======================GETTERS AND SETTERS======================*/
     public int getId() {
         return id;
     }
@@ -69,7 +70,12 @@ public class Illness extends IndieCureClass {
     public void setOfficial(boolean official) {
         isOfficial = official;
     }
+    /*============================================*/
 
+    /*======================DATABASE CLASS MANAGEMENT======================*/
+    /**
+     * Inserts the class propierties into the table (illness)
+     */
     @Override
     public void addToDB(){
         try {
@@ -91,6 +97,9 @@ public class Illness extends IndieCureClass {
         }
     }
 
+    /**
+     * Modifies database entry which has same id as this class in the table (illness)
+     */
     @Override
     public void modifyOnDB(){
         try {
@@ -104,6 +113,8 @@ public class Illness extends IndieCureClass {
             deleteRelation();
             makeRelation("syn");
             makeRelation("test");
+
+            //close resources
             update.close();
             connection.close();
         } catch (Exception e) {
@@ -112,6 +123,9 @@ public class Illness extends IndieCureClass {
         }
     }
 
+    /**
+     * Removes from database the entry which has same id as this class in the table (illness)
+     */
     @Override
     public void removeFromDB(){
         try {
@@ -120,6 +134,8 @@ public class Illness extends IndieCureClass {
             PreparedStatement delete = connection.prepareStatement(statementDelete);
             delete.setInt(1, id);
             delete.executeUpdate();
+
+            //close resources
             delete.close();
             connection.close();
         } catch (Exception e) {
@@ -128,6 +144,10 @@ public class Illness extends IndieCureClass {
         }
     }
 
+    /**
+     * checks if theres an entry on database which has same id as this class.
+     * @return true if exist entry on database. false if doesnt exist entry on database
+     */
     @Override
     public boolean checkIfExistInDB() {
         boolean exist = false;
@@ -139,10 +159,12 @@ public class Illness extends IndieCureClass {
             ResultSet result = sentence.executeQuery();
             while (result.next()) {
                 String illnessName = result.getString("name");
-                if (illnessName.equals(name)) {
+                if (illnessName.equalsIgnoreCase(name.toLowerCase())) {
                     exist = true;
                 }
             }
+
+            //close resources
             result.close();
             sentence.close();
             connection.close();
@@ -152,7 +174,10 @@ public class Illness extends IndieCureClass {
             return exist;
     }
 
-
+    /**
+     * constructs the relation N:M on the tables (sym_ill & ill_test)
+     * Bindings: table (illness) - table (symptom) | table (illness) - table (medical_test)
+     */
     private void makeRelation(String mode){
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb","root","");
@@ -164,6 +189,8 @@ public class Illness extends IndieCureClass {
                     insert.setInt(1, id);
                     insert.setInt(2, symptom.getId());
                     insert.executeUpdate();
+
+                    //close statement
                     insert.close();
                 }
             } else if (mode.equals("test")) {
@@ -173,10 +200,13 @@ public class Illness extends IndieCureClass {
                     insert.setInt(1, id);
                     insert.setInt(2, medicalTest.getId());
                     insert.executeUpdate();
-                    insert.close();
 
+                    //close statement
+                    insert.close();
                 }
             }
+
+            //close resources
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,6 +214,10 @@ public class Illness extends IndieCureClass {
         }
     }
 
+    /**
+     * constructs the relation N:M on the tables (sym_ill & ill_test)
+     * Bindings: table (illness) - table (symptom) | table (illness) - table (medical_test)
+     */
     private void deleteRelation(){
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb","root","");
@@ -195,8 +229,9 @@ public class Illness extends IndieCureClass {
             delete = connection.prepareStatement(query);
             delete.setInt(1, id);
             delete.executeUpdate();
-            delete.close();
 
+            //close resources
+            delete.close();
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -204,6 +239,10 @@ public class Illness extends IndieCureClass {
         }
     }
 
+    /**
+     * locates the symptoms of this class and makes a relation 1:N
+     * Bindings table (diagnostic) - table (pacient)
+     */
     public void findAndAssingRelations_symptoms() {
         symptomsList = new ArrayList<>();
         try {
@@ -223,10 +262,20 @@ public class Illness extends IndieCureClass {
                 symptom.setDescription("description");
                 symptomsList.add(symptom);
             }
+
+            //close resources
+            result.close();
+            sentence.close();
+            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * locates the symptoms of this class and makes a relation 1:N
+     * Bindings table (diagnostic) - table (pacient)
+     */
     public void findAndAssingRelations_medicalTest() {
         medicalTestsList = new ArrayList<>();
         try {
@@ -245,11 +294,19 @@ public class Illness extends IndieCureClass {
                 medicalTest.setName(result.getString("name"));
                 medicalTestsList.add(medicalTest);
             }
+
+            //close resources
+            result.close();
+            sentence.close();
+            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * auto-assing this id class based on the database existing ids
+     */
     public void assingId(){
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb","root","");
@@ -273,6 +330,8 @@ public class Illness extends IndieCureClass {
             } else {
                 id = illCount;
             }
+
+            //close resources
             result.close();
             sentence.close();
             connection.close();
@@ -280,4 +339,5 @@ public class Illness extends IndieCureClass {
             sqle.printStackTrace();
         }
     }
+    /*============================================*/
 }

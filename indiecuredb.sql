@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2024 a las 16:18:27
+-- Tiempo de generación: 16-05-2024 a las 09:23:11
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -59,11 +59,11 @@ CREATE TABLE `dia_sin` (
 --
 
 INSERT INTO `dia_sin` (`id`, `id_diagnostic`, `id_symptom`) VALUES
-(5, 1, 1),
-(14, 2, 1),
-(15, 2, 9),
-(16, 2, 5),
-(17, 2, 4);
+(50, 2, 1),
+(51, 2, 9),
+(52, 2, 5),
+(53, 2, 4),
+(54, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -189,7 +189,8 @@ INSERT INTO `pacient` (`id`, `name`, `age`) VALUES
 (1, 'Mario', 53),
 (2, 'Luis', 23),
 (3, 'Lewis', 71),
-(4, 'Mariano', 31);
+(4, 'Mariano', 31),
+(5, 'Robert Garcia', 12);
 
 -- --------------------------------------------------------
 
@@ -336,7 +337,7 @@ ALTER TABLE `sym_ill`
 -- AUTO_INCREMENT de la tabla `dia_sin`
 --
 ALTER TABLE `dia_sin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de la tabla `doctor`

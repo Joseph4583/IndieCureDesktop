@@ -37,16 +37,26 @@ public class HomeScreen implements Initializable {
     AlertDialog alertDialog = new AlertDialog();
     IndicureThread indicureThread = new IndicureThread();
 
+    /**
+     * Starts the HomeScreen's clock and sets the ListView MouseEvent.
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        indicureThread.setLabel(labelTime);
-        indicureThread.start();
-        notificationListView.setItems(items);
         ScheduledExecutorService delayset = Executors.newScheduledThreadPool(1);
         delayset.scheduleAtFixedRate(() -> {
             if (!Objects.isNull(doctor)) {
                 labelDoctor.setText(doctor.getName() + " --- " + doctor.getSpecializations());
                 refreshDiagnosticList();
+                notificationListView.setItems(items);
+                indicureThread.setLabel(labelTime);
+                indicureThread.start();
                 delayset.shutdown();
             }
         }, 0, 1000, TimeUnit.MICROSECONDS);
@@ -57,7 +67,7 @@ public class HomeScreen implements Initializable {
                 for (Diagnostic diagnosticHelper : diagnosticArrayList){
                     if (diagnosticHelper.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
                         if (diagnosticHelper.getIllness().getId() == 0) {
-                            tagGeneral.setText("Diagnostico sin enfermedad asiganda");
+                            tagGeneral.setText("Diagnostico sin enfermedad asignada");
                             String symptoms = "";
                             for (Symptom symptom: diagnosticHelper.getSymptomsList()) {
                                 symptoms += symptom.getName() + "\n";
@@ -101,6 +111,7 @@ public class HomeScreen implements Initializable {
         });
     }
 
+    /*======================FXML CLICK EVENTS======================*/
     public void switchScreenToHome(ActionEvent actionEvent) {
 
     }
@@ -156,7 +167,6 @@ public class HomeScreen implements Initializable {
             alertDialog.AlertInfo("Los medico especialistas no pueden entrar aqui");
         }
     }
-
     public void goToProfile(ActionEvent actionEvent) {
         switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
     }
@@ -164,58 +174,15 @@ public class HomeScreen implements Initializable {
     public void closeSession(ActionEvent actionEvent) {
         switcher.LogOff(stage);
     }
+    /*============================================*/
 
+    /*======================GETTERS AND SETTERS======================*/
     public Doctor getDoctor() {
         return doctor;
     }
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
-    }
-
-    public void refreshDiagnosticList() {
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb", "root", "");
-            Statement sentence = connection.createStatement();
-            String query = "SELECT * FROM diagnostic";
-            ResultSet result = sentence.executeQuery(query);
-            diagnosticArrayList = new ArrayList<>();
-            while (result.next()) {
-
-                Diagnostic diagnistocHelper = new Diagnostic();
-                diagnistocHelper.setId(result.getInt("id"));
-                diagnistocHelper.findAndAssingPacient();
-                diagnistocHelper.findAndAssingIllness();
-                diagnistocHelper.findAndAssingSymptoms();
-                diagnistocHelper.setConfirmed(result.getBoolean("is_confirmed"));
-                switch (doctor.getSpecializations()) {
-                    case "Admin":
-                        diagnosticArrayList.add(diagnistocHelper);
-                        items.add(diagnistocHelper.getId() + " --- " + diagnistocHelper.getPacient().getName());
-                        break;
-                    case "Cabezera":
-                        if (diagnistocHelper.isConfirmed()) {
-                            diagnosticArrayList.add(diagnistocHelper);
-                            items.add(diagnistocHelper.getId() + " --- " + diagnistocHelper.getPacient().getName());
-                        }
-                        break;
-                    case "Especial":
-                        if (!diagnistocHelper.isConfirmed()) {
-                            diagnosticArrayList.add(diagnistocHelper);
-                            items.add(diagnistocHelper.getId() + " --- " + diagnistocHelper.getPacient().getName());
-                        }
-                        break;
-                }
-
-
-            }
-            // Cierra los recursos
-            result.close();
-            sentence.close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public Stage getStage() {
@@ -225,6 +192,52 @@ public class HomeScreen implements Initializable {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+    /*============================================*/
 
-
+    /*======================SCREEN FUNCIONALITY======================*/
+    /**
+     * refresh the listView with database content of table (diagnostic)
+     */
+    public void refreshDiagnosticList() {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb", "root", "");
+            Statement sentence = connection.createStatement();
+            String query = "SELECT * FROM diagnostic";
+            ResultSet result = sentence.executeQuery(query);
+            diagnosticArrayList = new ArrayList<>();
+            while (result.next()) {
+                Diagnostic diagnosticHelper = new Diagnostic();
+                diagnosticHelper.setId(result.getInt("id"));
+                diagnosticHelper.findAndAssingPacient();
+                diagnosticHelper.findAndAssingIllness();
+                diagnosticHelper.findAndAssingSymptoms();
+                diagnosticHelper.setConfirmed(result.getBoolean("is_confirmed"));
+                switch (doctor.getSpecializations()) {
+                    case "Admin":
+                        diagnosticArrayList.add(diagnosticHelper);
+                        items.add(diagnosticHelper.getId() + " --- " + diagnosticHelper.getPacient().getName());
+                        break;
+                    case "Cabezera":
+                        if (diagnosticHelper.isConfirmed()) {
+                            diagnosticArrayList.add(diagnosticHelper);
+                            items.add(diagnosticHelper.getId() + " --- " + diagnosticHelper.getPacient().getName());
+                        }
+                        break;
+                    case "Especial":
+                        if (!diagnosticHelper.isConfirmed()) {
+                            diagnosticArrayList.add(diagnosticHelper);
+                            items.add(diagnosticHelper.getId() + " --- " + diagnosticHelper.getPacient().getName());
+                        }
+                        break;
+                }
+            }
+            // close resource
+            result.close();
+            sentence.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    /*============================================*/
 }

@@ -1,7 +1,9 @@
 package org.example.indiecure_aplication.Model.Classes;
 
 
-
+/**
+ * This class is a propierty of the Illness class
+ */
 public class MedicalTest {
     int id;
     String name;

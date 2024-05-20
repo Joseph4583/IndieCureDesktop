@@ -46,6 +46,33 @@ public class DiagnosticScreen implements Initializable {
     ObservableList<DiagnosticTransformed> items = FXCollections.observableArrayList();
     Checks checks = new Checks();
 
+    /**
+     * sets the tableView tables with the DiagnosticTransformed class
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        id_diagnostico.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, Integer>("id"));
+        id_paciente.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, Integer>("idPacient"));
+        nombre_paciente.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, String>("namePacient"));
+        id_enfermedad.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, Integer>("idIllness"));
+        nombre_enfermedad.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, String>("nameIllness"));
+        sintomas.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, String>("symptoms"));
+        refreshDiagnosticList();
+
+        for (Diagnostic diagnistocHelper: diagnosticArrayList){
+            items.add(new DiagnosticTransformed(diagnistocHelper));
+        }
+        table.setItems(items);
+        radioBtnPacient.setSelected(true);
+    }
+
+    /*======================FXML CLICK EVENTS======================*/
     public void switchScreenToHome(ActionEvent actionEvent) {
         switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
     }
@@ -83,12 +110,18 @@ public class DiagnosticScreen implements Initializable {
         } else {
             alertDialog.AlertInfo("no tienes permisos de administrador");
         }
-
+    }
+    public void switchScreenToDiagnostic(ActionEvent actionEvent) {}
+    public void goToProfile(ActionEvent actionEvent) {
+        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
     }
 
-    public void switchScreenToDiagnostic(ActionEvent actionEvent) {
+    public void closeSession(ActionEvent actionEvent) {
+        switcher.LogOff(stage);
     }
+    /*============================================*/
 
+    /*======================GETTERS AND SETTERS======================*/
     public Doctor getDoctor() {
         return doctor;
     }
@@ -104,32 +137,24 @@ public class DiagnosticScreen implements Initializable {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+    /*============================================*/
 
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        id_diagnostico.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, Integer>("id"));
-        id_paciente.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, Integer>("idPacient"));
-        nombre_paciente.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, String>("namePacient"));
-        id_enfermedad.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, Integer>("idIllness"));
-        nombre_enfermedad.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, String>("nameIllness"));
-        sintomas.setCellValueFactory(new PropertyValueFactory<DiagnosticTransformed, String>("symptoms"));
-        refreshDiagnosticList();
+    /*======================SCREEN FUNCIONALITY======================*/
 
-        for (Diagnostic diagnistocHelper: diagnosticArrayList){
-            items.add(new DiagnosticTransformed(diagnistocHelper));
-        }
-        table.setItems(items);
-    }
-
+    /**
+     * this methods shows and process the content from DiagnosticDialog
+     * @param mode
+     */
     public void showDialogo(String mode) {
         try {
+            //loads the dialog
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("View/Dialogs/DiagnosticDialog.fxml"));
             DialogPane root = loader.load();
             DiagnosticDialog controller = loader.getController();
 
-            // Configura la ventana emergente (diálogo)
+            // configures the dialog base on if its for adding or modifying
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setDialogPane(root);
-            controller.startDialog();
             if (mode.equals("add")) {
                 dialog.setTitle("Añadir Sintomas a la enfermedad");
             } else if (mode.equals("mod")) {
@@ -137,8 +162,7 @@ public class DiagnosticScreen implements Initializable {
                 controller.loadFields(diagnostic);
             }
 
-
-            // Muestra el diálogo y espera a que el usuario interactúe con él
+            //shows the dialog and process the content after user clicks on buttons
             boolean loopExit = false;
             while (!loopExit) {
                 Optional<ButtonType> result = dialog.showAndWait();
@@ -146,17 +170,14 @@ public class DiagnosticScreen implements Initializable {
                     Pacient pacientHelper = controller.getPacientFromComboBox();
                     if (pacientHelper.getId() != 0) {
                         Illness illnessHelper = controller.getIllnessFromComboBox();
-                        ArrayList<TextField> symptomList = controller.getSymptomList();
-                        if (!checks.checkIfEmpty(symptomList)) {
-                            ArrayList<Symptom> arraySymptomsList = controller.checkAndGetSymptoms();
-                            if (!Objects.isNull(arraySymptomsList)) {
-                                diagnostic.setPacient(pacientHelper);
-                                diagnostic.setSymptomsList(arraySymptomsList);
-                                if (illnessHelper.getId() != 0){
-                                    diagnostic.setIllness(illnessHelper);
-                                }
-                                loopExit = true;
+                        ArrayList<Symptom> arraySymptomsList = controller.getSymptomsFromComboBox();
+                        if (!Objects.isNull(arraySymptomsList)) {
+                            diagnostic.setPacient(pacientHelper);
+                            diagnostic.setSymptomsList(arraySymptomsList);
+                            if (illnessHelper.getId() != 0){
+                                diagnostic.setIllness(illnessHelper);
                             }
+                            loopExit = true;
                         } else {
                             alertDialog.AlertWarning("Algun campo esta vacio");
                         }
@@ -173,6 +194,10 @@ public class DiagnosticScreen implements Initializable {
         }
     }
 
+    /**
+     * pops the Dialog and adds a diagnostic entry into the databse table (diagnostic)
+     * @param actionEvent
+     */
     public void addDiagnostic(ActionEvent actionEvent) {
         showDialogo("add");
         try {
@@ -192,12 +217,16 @@ public class DiagnosticScreen implements Initializable {
             }
 
         } catch (AlreadyExistingObject aeo) {
-            alertDialog.AlertError(aeo.toString());
+            alertDialog.AlertError("El diagnostico ya existe");
         } catch (CancelDialogException cde) {
 
         }
     }
 
+    /**
+     * pops the Dialog and modifies diagnostic entry in the databse table (diagnostic)
+     * @param actionEvent
+     */
     public void modDiagnostic(ActionEvent actionEvent) {
         if (!table.getSelectionModel().isEmpty()) {
             DiagnosticTransformed diagnosticSelected = table.getSelectionModel().getSelectedItem();
@@ -226,6 +255,10 @@ public class DiagnosticScreen implements Initializable {
         }
     }
 
+    /**
+     * pops the Dialog and removes diagnostic entry from the databse table (diagnostic)
+     * @param actionEvent
+     */
     public void removeDiagnostic(ActionEvent actionEvent) {
         if (!table.getSelectionModel().isEmpty()) {
             DiagnosticTransformed diagnosticSelected = table.getSelectionModel().getSelectedItem();
@@ -244,13 +277,16 @@ public class DiagnosticScreen implements Initializable {
                     throw new NonExistingObject("Esta enfermedad no existe en la base de datos");
                 }
             } catch (NonExistingObject neo) {
-                alertDialog.AlertError(neo.toString());
+                alertDialog.AlertError("Esta enfermedad no existe en la base de datos");
             }
         } else {
             alertDialog.AlertWarning("No hay ninguna enfermedad seleccionada");
         }
     }
 
+    /**
+     * refresh the listView with database content of table (diagnostic)
+     */
     public void refreshDiagnosticList() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb", "root", "");
@@ -267,7 +303,7 @@ public class DiagnosticScreen implements Initializable {
                 diagnistocHelper.setConfirmed(result.getBoolean("is_confirmed"));
                 diagnosticArrayList.add(diagnistocHelper);
             }
-            // Cierra los recursos
+            // close resource
             result.close();
             sentence.close();
             connection.close();
@@ -276,6 +312,10 @@ public class DiagnosticScreen implements Initializable {
         }
     }
 
+    /**
+     * this methods search an entry base on what radiobutton is selected
+     * @param actionEvent
+     */
     public void searchEntry(ActionEvent actionEvent) {
         if (textFieldSearch.getText().isBlank()){
             table.setItems(items);
@@ -292,12 +332,18 @@ public class DiagnosticScreen implements Initializable {
         }
     }
 
+    /**
+     * this method filters base on the search TextField to obtain only the entrys that match the TextField
+     * @param searchWord
+     * @param mode
+     * @return ObservableList<DiagnosticTransformed>
+     */
     public ObservableList<DiagnosticTransformed> filterSearchList(String searchWord, String mode){
         ObservableList<DiagnosticTransformed> filtredItems = FXCollections.observableArrayList();
         for (DiagnosticTransformed diagnostic: items) {
             switch (mode){
                 case "pacient":
-                    if (diagnostic.getNamePacient().contains(searchWord)) {
+                    if (diagnostic.getNamePacient().toLowerCase().contains(searchWord.toLowerCase()) || String.valueOf(diagnostic.getIdPacient()).contains(searchWord)) {
                         filtredItems.add(diagnostic);
                     }
                     break;
@@ -307,7 +353,7 @@ public class DiagnosticScreen implements Initializable {
                     }
                     break;
                 case "illness":
-                    if (diagnostic.getNameIllness().contains(searchWord)) {
+                    if (diagnostic.getNameIllness().toLowerCase().contains(searchWord.toLowerCase()) || String.valueOf(diagnostic.getIdIllness()).contains(searchWord)) {
                         filtredItems.add(diagnostic);
                     }
                     break;
@@ -319,14 +365,5 @@ public class DiagnosticScreen implements Initializable {
         }
         return filtredItems;
     }
-
-    public void goToProfile(ActionEvent actionEvent) {
-        switcher.screenSwitch("HomeScreen.fxml", stage, doctor);
-    }
-
-    public void closeSession(ActionEvent actionEvent) {
-        switcher.LogOff(stage);
-    }
-
-
+    /*============================================*/
 }

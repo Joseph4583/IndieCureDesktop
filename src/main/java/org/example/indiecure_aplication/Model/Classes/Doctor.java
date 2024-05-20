@@ -1,5 +1,8 @@
 package org.example.indiecure_aplication.Model.Classes;
 
+/**
+ * this class handles the users in the app
+ */
 public class Doctor {
     int id;
     String name;

@@ -16,6 +16,7 @@ public class Pacient extends IndieCureClass {
         this.age = age;
     }
 
+    /*======================GETTERS AND SETTERS======================*/
     public int getId() {
         return id;
     }
@@ -39,7 +40,12 @@ public class Pacient extends IndieCureClass {
     public void setAge(int age) {
         this.age = age;
     }
+    /*============================================*/
 
+    /*======================DATABASE CLASS MANAGEMENT======================*/
+    /**
+     * Inserts the class propierties into the table (pacient)
+     */
     @Override
     public void addToDB(){
         try {
@@ -59,6 +65,9 @@ public class Pacient extends IndieCureClass {
         }
     }
 
+    /**
+     * Modifies database entry which has same id as this class in the table (pacient)
+     */
     @Override
     public void modifyOnDB(){
         try {
@@ -77,6 +86,9 @@ public class Pacient extends IndieCureClass {
         }
     }
 
+    /**
+     * Removes from database the entry which has same id as this class in the table (pacient)
+     */
     @Override
     public void removeFromDB(){
         try {
@@ -93,6 +105,10 @@ public class Pacient extends IndieCureClass {
         }
     }
 
+    /**
+     * checks if theres an entry on database which has same id as this class.
+     * @return true if exist entry on database. false if doesnt exist entry on database
+     */
     @Override
     public boolean checkIfExistInDB() {
         boolean exist = false;
@@ -105,7 +121,7 @@ public class Pacient extends IndieCureClass {
             while (result.next()) {
                 String pacientName = result.getString("name");
                 int pacienteAge = result.getInt("age");
-                if (pacientName.equals(name) && pacienteAge == age) {
+                if (pacientName.equalsIgnoreCase(name.toLowerCase())) {
                     exist = true;
                 }
             }
@@ -118,6 +134,9 @@ public class Pacient extends IndieCureClass {
         return exist;
     }
 
+    /**
+     * auto-assing this id class based on the database existing ids
+     */
     public void assingId(){
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/indiecuredb","root","");
@@ -147,4 +166,5 @@ public class Pacient extends IndieCureClass {
             sqle.printStackTrace();
         }
     }
+    /*============================================*/
 }
