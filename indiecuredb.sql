@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-05-2024 a las 09:23:11
+-- Tiempo de generación: 20-05-2024 a las 21:58:10
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -40,7 +40,8 @@ CREATE TABLE `diagnostic` (
 
 INSERT INTO `diagnostic` (`id`, `id_pacient`, `id_illness`, `is_confirmed`) VALUES
 (1, 2, 0, 0),
-(2, 1, 1, 1);
+(2, 1, 1, 1),
+(3, 5, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -63,7 +64,9 @@ INSERT INTO `dia_sin` (`id`, `id_diagnostic`, `id_symptom`) VALUES
 (51, 2, 9),
 (52, 2, 5),
 (53, 2, 4),
-(54, 1, 1);
+(54, 1, 1),
+(59, 3, 9),
+(60, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -112,7 +115,9 @@ INSERT INTO `illness` (`id`, `name`, `severity`, `is_official`) VALUES
 (4, 'Resfriado comun', 'Muy_leve', 1),
 (5, 'Hipoglucemia', 'Muy_Grave', 1),
 (6, 'Fatiga cronica', 'Muy_Grave', 1),
-(7, 'Miositis', 'Muy_leve', 1);
+(7, 'Miositis', 'Muy_leve', 1),
+(8, 'Neumonia', 'Moderado', 0),
+(9, 'Verial', 'Letal', 0);
 
 -- --------------------------------------------------------
 
@@ -142,7 +147,10 @@ INSERT INTO `ill_test` (`id`, `id_illness`, `id_medical_test`) VALUES
 (47, 5, 8),
 (48, 6, 5),
 (49, 7, 6),
-(50, 7, 1);
+(50, 7, 1),
+(51, 8, 3),
+(52, 8, 4),
+(53, 9, 2);
 
 -- --------------------------------------------------------
 
@@ -190,7 +198,8 @@ INSERT INTO `pacient` (`id`, `name`, `age`) VALUES
 (2, 'Luis', 23),
 (3, 'Lewis', 71),
 (4, 'Mariano', 31),
-(5, 'Robert Garcia', 12);
+(5, 'Robert Garcia', 12),
+(6, 'Luis Hernandez', 34);
 
 -- --------------------------------------------------------
 
@@ -261,7 +270,13 @@ INSERT INTO `sym_ill` (`id`, `id_illness`, `id_symptom`) VALUES
 (56, 6, 6),
 (57, 6, 2),
 (58, 7, 6),
-(59, 7, 8);
+(59, 7, 8),
+(60, 8, 1),
+(61, 8, 7),
+(62, 9, 6),
+(63, 9, 3),
+(64, 9, 7),
+(65, 9, 1);
 
 --
 -- Índices para tablas volcadas
@@ -337,7 +352,7 @@ ALTER TABLE `sym_ill`
 -- AUTO_INCREMENT de la tabla `dia_sin`
 --
 ALTER TABLE `dia_sin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de la tabla `doctor`
@@ -349,7 +364,7 @@ ALTER TABLE `doctor`
 -- AUTO_INCREMENT de la tabla `ill_test`
 --
 ALTER TABLE `ill_test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT de la tabla `medical_test`
@@ -361,7 +376,7 @@ ALTER TABLE `medical_test`
 -- AUTO_INCREMENT de la tabla `sym_ill`
 --
 ALTER TABLE `sym_ill`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- Restricciones para tablas volcadas

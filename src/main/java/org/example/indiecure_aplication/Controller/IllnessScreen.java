@@ -52,7 +52,11 @@ public class IllnessScreen implements Initializable {
         refreshIllnessList();
         if (illnessArrayList.size() > 0) {
             for (Illness illnessHelper : illnessArrayList) {
-                items.add(illnessHelper.getId() + " --- " + illnessHelper.getName());
+                if(illnessHelper.isOfficial()){
+                    items.add(illnessHelper.getId() + " --- " + illnessHelper.getName() + " *");
+                } else{
+                    items.add(illnessHelper.getId() + " --- " + illnessHelper.getName());
+                }
             }
             illnessListView.setItems(items);
         }
@@ -252,7 +256,11 @@ public class IllnessScreen implements Initializable {
                     refreshIllnessList();
                     items.clear();
                     for (Illness illnessHelper : illnessArrayList) {
-                        items.add(illnessHelper.getId() + " --- " + illnessHelper.getName());
+                        if(illnessHelper.isOfficial()){
+                            items.add(illnessHelper.getId() + " --- " + illnessHelper.getName() + " *");
+                        } else{
+                            items.add(illnessHelper.getId() + " --- " + illnessHelper.getName());
+                        }
                     }
                     illnessListView.setItems(items);
 

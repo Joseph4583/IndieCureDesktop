@@ -55,7 +55,11 @@ public class SymptomScreen implements Initializable {
         refreshSymptomList();
         if (symptomArrayList.size() > 0) {
             for (Symptom symptomHelper : symptomArrayList) {
-                items.add(symptomHelper.getId() + " --- " + symptomHelper.getName());
+                if (symptomHelper.isOfficial()){
+                    items.add(symptomHelper.getId() + " --- " + symptomHelper.getName() + " *");
+                } else {
+                    items.add(symptomHelper.getId() + " --- " + symptomHelper.getName());
+                }
             }
             symptomListView.setItems(items);
         }
@@ -202,7 +206,11 @@ public class SymptomScreen implements Initializable {
                     refreshSymptomList();
                     items.clear();
                     for (Symptom symptomHelper : symptomArrayList) {
-                        items.add(symptomHelper.getId() + " --- " + symptomHelper.getName());
+                        if (symptomHelper.isOfficial()){
+                            items.add(symptomHelper.getId() + " --- " + symptomHelper.getName() + " *");
+                        } else {
+                            items.add(symptomHelper.getId() + " --- " + symptomHelper.getName());
+                        }
                     }
                     symptomListView.setItems(items);
                 } else {
@@ -308,7 +316,7 @@ public class SymptomScreen implements Initializable {
                 symptomHelper.setOfficial(result.getBoolean("is_official"));
                 symptomArrayList.add(symptomHelper);
             }
-            // Cierra los recursos
+            // close resources
             result.close();
             sentence.close();
             connection.close();
