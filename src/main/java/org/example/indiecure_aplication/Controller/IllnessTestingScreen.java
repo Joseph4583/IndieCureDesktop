@@ -40,13 +40,8 @@ public class IllnessTestingScreen implements Initializable {
     ObservableList<String> items = FXCollections.observableArrayList();
 
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        radioButtonsPositive.add(radioBtnPositive1);
-        radioButtonsNeutral.add(radioBtnNeutral1);
-        radioButtonsNegative.add(radioBtnNegative1);
         refreshDiagnosticList();
         testingListView.setItems(items);
 
@@ -144,30 +139,36 @@ public class IllnessTestingScreen implements Initializable {
     }
 
     public void sendSelections(ActionEvent actionEvent) {
-        String selectedItem = testingListView.getSelectionModel().getSelectedItem();
-        for (Diagnostic diagnostic: diagnosticArrayList) {
-            if (diagnostic.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
-                int count = 0;
-                boolean someEmptyPoint = false;
-                for (MedicalTest medicalTest : diagnostic.getIllness().getMedicalTestsList()) {
-                    if (radioButtonsPositive.get(count).isSelected()) {
-                        medicalTest.setTestResult(TestResult.Positive);
-                    } else if (radioButtonsNeutral.get(count).isSelected()) {
-                        medicalTest.setTestResult(TestResult.Not_conclusive);
-                    } else if (radioButtonsNegative.get(count).isSelected()) {
-                        medicalTest.setTestResult(TestResult.Negative);
+        if (!testingListView.getSelectionModel().isEmpty()) {
+            String selectedItem = testingListView.getSelectionModel().getSelectedItem();
+            for (Diagnostic diagnostic: diagnosticArrayList) {
+                if (diagnostic.getId() == Integer.parseInt(selectedItem.split(" ")[0])) {
+                    int count = 0;
+                    boolean someEmptyPoint = false;
+                    for (MedicalTest medicalTest : diagnostic.getIllness().getMedicalTestsList()) {
+                        if (radioButtonsPositive.get(count).isSelected()) {
+                            medicalTest.setTestResult(TestResult.Positive);
+                        } else if (radioButtonsNeutral.get(count).isSelected()) {
+                            medicalTest.setTestResult(TestResult.Not_conclusive);
+                        } else if (radioButtonsNegative.get(count).isSelected()) {
+                            medicalTest.setTestResult(TestResult.Negative);
+                        } else {
+                            someEmptyPoint = true;
+                        }
+                        count++;
+                    }
+                    if (someEmptyPoint){
+                        alertDialog.AlertWarning("alguna prueba no fue marcada");
                     } else {
-                        someEmptyPoint = true;
+                        clearSelections();
+                        diagnostic.setConfirmed(true);
+                        diagnostic.modifyOnDB();
+                        alertDialog.AlertInfo("El diagnostico fue confirmado");
                     }
                 }
-                if (someEmptyPoint){
-                    alertDialog.AlertWarning("alguna prueba no fue marcada");
-                } else {
-                    clearSelections();
-                    diagnostic.setConfirmed(true);
-                    diagnostic.modifyOnDB();
-                }
             }
+        } else {
+            alertDialog.AlertWarning("No hay ningun diagnostico seleccionado");
         }
     }
 
