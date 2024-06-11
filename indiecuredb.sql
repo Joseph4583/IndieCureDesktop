@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-05-2024 a las 21:58:10
+-- Tiempo de generación: 11-06-2024 a las 09:12:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -41,7 +41,9 @@ CREATE TABLE `diagnostic` (
 INSERT INTO `diagnostic` (`id`, `id_pacient`, `id_illness`, `is_confirmed`) VALUES
 (1, 2, 0, 0),
 (2, 1, 1, 1),
-(3, 5, 1, 0);
+(3, 5, 1, 1),
+(4, 6, 5, 1),
+(5, 7, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -65,8 +67,16 @@ INSERT INTO `dia_sin` (`id`, `id_diagnostic`, `id_symptom`) VALUES
 (52, 2, 5),
 (53, 2, 4),
 (54, 1, 1),
-(59, 3, 9),
-(60, 3, 5);
+(76, 5, 9),
+(77, 5, 8),
+(78, 5, 3),
+(79, 5, 4),
+(80, 5, 6),
+(81, 4, 2),
+(82, 4, 7),
+(83, 4, 8),
+(84, 3, 9),
+(85, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -108,7 +118,7 @@ CREATE TABLE `illness` (
 --
 
 INSERT INTO `illness` (`id`, `name`, `severity`, `is_official`) VALUES
-(0, 'NO DATA', 'NO DATA', 1),
+(0, 'NO DATA', 'NO_DATA', 1),
 (1, 'Cancer', 'Letal', 1),
 (2, 'Gripe', 'Grave', 1),
 (3, 'Laringitis', 'Leve', 1),
@@ -199,7 +209,8 @@ INSERT INTO `pacient` (`id`, `name`, `age`) VALUES
 (3, 'Lewis', 71),
 (4, 'Mariano', 31),
 (5, 'Robert Garcia', 12),
-(6, 'Luis Hernandez', 34);
+(6, 'Luis Hernandez', 34),
+(7, 'Carlos', 23);
 
 -- --------------------------------------------------------
 
@@ -219,16 +230,16 @@ CREATE TABLE `symptom` (
 --
 
 INSERT INTO `symptom` (`id`, `name`, `description`, `is_official`) VALUES
-(1, 'tos', 'toses mucho', 1),
-(2, 'dolor de estomago', 'lelepancha', 1),
-(3, 'migrañas', 'dolor de cabeza persistente', 1),
-(4, 'mareos', 'estas borracho', 1),
-(5, 'vomitos', 'no mas', 1),
-(6, 'dolor de muscular', 'estas paralitico', 1),
-(7, 'dolor de garganta', 'no podes hablar', 1),
-(8, 'inflamaciones', 'estas infectado', 1),
-(9, 'desmayos', 'te vas pal suelo', 1),
-(10, 'dolor de cabeza', 'no puedes pensar', 1),
+(1, 'tos', 'accion involuntaria para eliminar material de las vías respiratorias y proteger los pulmones de partículas inhaladas.', 1),
+(2, 'dolor de estomago', 'molestia o malestar en la región abdominal. Puede variar en intensidad y estar relacionado con problemas digestivos', 1),
+(3, 'migrañas', 'dolor de cabeza que puede causar una sensación pulsátil intensa', 1),
+(4, 'mareos', 'sensación incómoda o desequilibrante', 1),
+(5, 'vomitos', 'expulsión forzada del contenido del estómago a través de la boca.', 1),
+(6, 'dolor de muscular', 'sensación incómoda o dolorosa en los músculos.', 1),
+(7, 'dolor de garganta', 'molestia o dolor en la garganta que a menudo empeora al tragar.', 1),
+(8, 'inflamaciones', 'respuesta natural del organismo ante una infección o lesión en el cuerpo.', 1),
+(9, 'desmayos', 'pérdida temporal de consciencia debido a la disminución del flujo sanguíneo al cerebro.', 1),
+(10, 'dolor de cabeza', 'molestia o dolor en la cabeza o el cuello. Puede variar en intensidad y duración.', 1),
 (11, 'Tarta', 'estas gordo', 0);
 
 -- --------------------------------------------------------
@@ -352,7 +363,7 @@ ALTER TABLE `sym_ill`
 -- AUTO_INCREMENT de la tabla `dia_sin`
 --
 ALTER TABLE `dia_sin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT de la tabla `doctor`
